@@ -1,0 +1,27 @@
+﻿@{
+Layout = "layout";
+}
+
+<div class="container">
+    <h1>Employees</h1>
+
+    <table class="employees-table">
+        <thead>
+        <tr class="title">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var employee in Model.Employees)
+        {
+        <tr class="employees">
+            <td>@employee.Id</td>
+            <td>@employee.Name</td>
+            <td>@employee.Age</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>

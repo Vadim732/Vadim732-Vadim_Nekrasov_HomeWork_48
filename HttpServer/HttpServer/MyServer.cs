@@ -1,0 +1,124 @@
+﻿using System.Net;
+using RazorEngine;
+using RazorEngine.Templating;
+
+namespace HttpServer
+{
+    public class MyServer
+    {
+        private string _siteDirectory;
+        private HttpListener _listener;
+        private int _port;
+
+        public async Task RunServerAsync(string path, int port)
+        {
+            _siteDirectory = path;
+            _port = port;
+            _listener = new HttpListener();
+            _listener.Prefixes.Add($"http://localhost:{_port.ToString()}/");
+            _listener.Start();
+            Console.WriteLine($"Server started on {_port} \nFiles in {_siteDirectory}");
+            await ListenAsync();
+        }
+
+        private async Task ListenAsync()
+        {
+            try
+            {
+                while (true)
+                {
+                    HttpListenerContext context = await _listener.GetContextAsync();
+                    Process(context);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void Process(HttpListenerContext context)
+        {
+            string filename = context.Request.Url.AbsolutePath;
+            filename = _siteDirectory + filename;
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    string content = BuildHtml(filename, context.Request.QueryString);
+                    context.Response.ContentType = GetContentType(filename);
+                    context.Response.ContentLength64 = System.Text.Encoding.UTF8.GetBytes(content).Length;
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
+                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                    context.Response.OutputStream.Flush();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.OutputStream.Write(new byte[0]);
+                }
+            }
+            else
+            {
+                context.Response.StatusCode = 404;
+                context.Response.OutputStream.Write(new byte[0]);
+            }
+            context.Response.OutputStream.Close();
+        }
+
+        private string BuildHtml(string filename, System.Collections.Specialized.NameValueCollection query)
+        {
+            var serializer = new Serializer();
+            List<Emploeeys> employees = serializer.LoadEmployees();
+            int idFrom = query["IdFrom"] != null ? int.Parse(query["IdFrom"]) : 0;
+            int idTo = query["IdTo"] != null ? int.Parse(query["IdTo"]) : int.MaxValue;
+            var filteredEmployees = employees
+                .Where(e => e.Id >= idFrom && e.Id <= idTo)
+                .OrderBy(e => e.Id)
+                .ToList();
+            
+            string layoutPath = _siteDirectory + "/layout.html";
+            var razorService = Engine.Razor;
+            if (!razorService.IsTemplateCached("layout", null))
+                razorService.AddTemplate("layout", File.ReadAllText(layoutPath));
+            if (!razorService.IsTemplateCached(filename, null))
+            {
+                razorService.AddTemplate(filename, File.ReadAllText(filename));
+                razorService.Compile(filename);
+            }
+
+            string html = razorService.Run(filename, null, new
+            {
+                Employees = filteredEmployees
+            });
+
+            return html;
+        }
+
+        private string? GetContentType(string filename)
+        {
+            var Dictionary = new Dictionary<string, string>()
+            {
+                {".css", "text/css"},
+                {".js", "application/javascript"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".html", "text/html"},
+                {".json", "application/json"}
+            };
+            string contentype = "";
+            string extension = Path.GetExtension(filename);
+            Dictionary.TryGetValue(extension, out contentype);
+            return contentype;
+        }
+
+        public void Stop()
+        {
+            _listener.Abort();
+            _listener.Stop();
+        }
+    }
+}
