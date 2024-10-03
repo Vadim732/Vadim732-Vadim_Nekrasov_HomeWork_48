@@ -1,5 +1,13 @@
-﻿.container {
-    padding-top: 1.2em;
+﻿.body-background {
+    background-color: #24232b;
+}
+
+.container {
+    margin-top: 1.2em;
+    padding: 1.2em 2.8em;
+    background-color: #016e40;
+    border-radius: 1.6em;
+    color: azure;
 }
 
 .title {
@@ -9,6 +17,7 @@
 
 h1 {
     text-align: left;
+    margin-bottom: 1.8em;
 }
 
 .employees-table {
