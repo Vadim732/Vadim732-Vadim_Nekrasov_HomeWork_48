@@ -22,10 +22,10 @@ public class Serializer
     {
         var newEmployees = new List<Emploeeys>
         {
-            new Emploeeys { Id = 1, Name = "John Smith", Age = 50 },
-            new Emploeeys { Id = 2, Name = "Anny Jackson", Age = 94 },
-            new Emploeeys { Id = 3, Name = "Freddy Jackson", Age = 19 },
-            new Emploeeys { Id = 4, Name = "Rick Doe", Age = 34 }
+            new Emploeeys { Id = 1, Name = "John", Surname = "Smith", Age = 50, About = "I am a hard worker" },
+            new Emploeeys { Id = 2, Name = "Anny", Surname = "Jackson", Age = 94, About = "I am a cashier" },
+            new Emploeeys { Id = 3, Name = "Freddy", Surname = "Jackson", Age = 19, About = "I'm working part-time" },
+            new Emploeeys { Id = 4, Name = "Rick", Surname = "Doe", Age = 34, About = "I like drinking tea" }
         };
         var json = JsonSerializer.Serialize(newEmployees, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(path, json);
