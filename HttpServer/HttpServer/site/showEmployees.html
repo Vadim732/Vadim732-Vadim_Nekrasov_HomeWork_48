@@ -11,6 +11,7 @@ Layout = "layout";
         <tr class="title">
             <th>Id</th>
             <th>Name</th>
+            <th>Surname</th>
             <th>Age</th>
             <th>Actions</th>
         </tr>
@@ -21,8 +22,9 @@ Layout = "layout";
         <tr class="employees">
             <td>@employee.Id</td>
             <td>@employee.Name</td>
+            <td></td>
             <td>@employee.Age</td>
-            <td><a class="btn btn-outline-light">Ditails</a></td>
+            <td><a href="http://localhost:7777/employee.html?id=@employee.Id" class="btn btn-outline-light">Ditails</a></td>
         </tr>
         }
         </tbody>

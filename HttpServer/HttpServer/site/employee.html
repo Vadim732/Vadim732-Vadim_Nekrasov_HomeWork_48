@@ -1,0 +1,24 @@
+﻿@{
+Layout = "layout";
+}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-4">
+            <h2 class="text-center">Info:</h2>
+            <div>
+                <p><strong>Id:</strong> @Model.Employees.Id</p>
+                <p><strong>Name:</strong> @Model.Employees.Name</p>
+                <p><strong>Surname:</strong> @Model.Employees.Surname</p>
+                <p><strong>Age:</strong> @Model.Employees.Age</p>
+            </div>
+        </div>
+        <div class="col-8 frame">
+            <h2 class="text-center">About:</h2>
+            <p class="mt-6">@Model.Exercise.About</p>
+        </div>
+        <div class="text-center mt-5">
+            <a href="showEmployees.html" class="btn btn-dark">Back</a>
+        </div>
+    </div>
+</div>
