@@ -5,7 +5,7 @@ namespace HttpServer;
 public class Serializer
 {
     private readonly string path = "employees.json";
-
+    
     public List<Emploeeys> LoadEmployees()
     {
         if (!File.Exists(path) || new FileInfo(path).Length == 0 || string.IsNullOrWhiteSpace(File.ReadAllText(path)))
@@ -17,7 +17,15 @@ public class Serializer
 
         return employees;
     }
-
+    
+    public void AddEmployee(Emploeeys newEmployee)
+    {
+        var employees = LoadEmployees();
+        employees.Add(newEmployee);
+        var json = JsonSerializer.Serialize(employees, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(path, json);
+    }
+    
     private List<Emploeeys> newEmployees()
     {
         var newEmployees = new List<Emploeeys>
@@ -33,3 +41,4 @@ public class Serializer
         return newEmployees;
     }
 }
+

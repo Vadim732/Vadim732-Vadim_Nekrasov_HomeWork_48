@@ -2,9 +2,10 @@
 Layout = "layout";
 }
 
+<body class="body-background">
 <div class="container">
     <h3 class="text-center md-10">Add a new employee:</h3>
-    <form action="showEmployees.html" method="post">
+    <form action="addEmployee" method="post">
         <div class="col-auto mt-10">
             <label for="id" class="visually-hidden">Id</label>
             <input name="id" type="text" class="form-control" id="id" placeholder="Enter employee ID...">
@@ -15,16 +16,18 @@ Layout = "layout";
         </div>
         <div class="col-auto mt-10">
             <label for="surname" class="visually-hidden">Surname</label>
-            <input name="surname" type="text" class="form-control" id="surname" placeholder="Enter name...">
+            <input name="surname" type="text" class="form-control" id="surname" placeholder="Enter surname...">
         </div>
         <div class="col-auto mt-10">
             <label for="age" class="visually-hidden">Age</label>
-            <input name="age" type="text" class="form-control" id="age" placeholder="Enter name...">
+            <input name="age" type="text" class="form-control" id="age" placeholder="Enter age...">
         </div>
         <div class="mb-3 mt-10">
             <label for="about" class="form-label">About</label>
             <textarea name="about" class="form-control" id="about" rows="6" cols="24"></textarea>
         </div>
-        <p class="d-grid gap-2"><input type="submit" value="Add an employee" class="btn btn-outline-dark"></p>
+        <p class="d-grid gap-2 mt-10"><input type="submit" value="Add an employee" class="btn btn-outline-light">
+            <a href="showEmployees.html" class="btn btn-outline-light mt-10">Back</a></p>
     </form>
 </div>
+</body>

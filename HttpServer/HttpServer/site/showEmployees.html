@@ -11,9 +11,8 @@ Layout = "layout";
         <tr class="title">
             <th>Id</th>
             <th>Name</th>
-            <th>Surname</th>
             <th>Age</th>
-            <th>About</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -22,13 +21,13 @@ Layout = "layout";
         <tr class="employees">
             <td>@employee.Id</td>
             <td>@employee.Name</td>
-            <td>@employee.Surname</td>
             <td>@employee.Age</td>
-            <th>@employee.About</th>
+            <td><a class="btn btn-outline-light">Ditails</a></td>
         </tr>
         }
         </tbody>
     </table>
+    <p class="text-center"><a href="addEmployee.html" class="btn btn-light mt-5">Add employee</a></p>
 </div>
 
 </body>

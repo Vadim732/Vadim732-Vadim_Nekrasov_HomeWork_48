@@ -65,6 +65,31 @@ public class MyServer
                 context.Response.OutputStream.Close();
             }
         }
+        else if (context.Request.HttpMethod == "POST" && filename == "/addEmployee")
+        {
+            using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
+            {
+                var body = reader.ReadToEnd();
+                var formData = body.Split('&')
+                    .Select(s => s.Split('='))
+                    .ToDictionary(p => p[0], p => Uri.UnescapeDataString(p[1]));
+                Emploeeys newEmployee = new Emploeeys
+                {
+                    Id = formData["id"],
+                    Name = formData["name"],
+                    Surname = formData["surname"],
+                    Age = formData["age"],
+                    About = formData["about"]
+                };
+
+                var serializer = new Serializer();
+                serializer.AddEmployee(newEmployee);
+                context.Response.Redirect("/showEmployees.html");
+                context.Response.StatusCode = (int)HttpStatusCode.Found;
+                context.Response.OutputStream.Close();
+            }
+        }
+
         else
         {
             filename = _siteDirectory + filename;
