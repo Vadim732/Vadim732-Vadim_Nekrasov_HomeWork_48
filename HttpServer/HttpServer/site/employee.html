@@ -7,18 +7,18 @@ Layout = "layout";
         <div class="col-4">
             <h2 class="text-center">Info:</h2>
             <div>
-                <p><strong>Id:</strong> @Model.Employees.Id</p>
-                <p><strong>Name:</strong> @Model.Employees.Name</p>
-                <p><strong>Surname:</strong> @Model.Employees.Surname</p>
-                <p><strong>Age:</strong> @Model.Employees.Age</p>
+                <p><strong>Id:</strong> @Model.Employee.Id</p>
+                <p><strong>Name:</strong> @Model.Employee.Name</p>
+                <p><strong>Surname:</strong> @Model.Employee.Surname</p>
+                <p><strong>Age:</strong> @Model.Employee.Age</p>
             </div>
         </div>
-        <div class="col-8 frame">
+        <div class="col-8 text-center">
             <h2 class="text-center">About:</h2>
-            <p class="mt-6">@Model.Exercise.About</p>
+            <p class="mt-6">@Model.Employee.About</p>
         </div>
         <div class="text-center mt-5">
-            <a href="showEmployees.html" class="btn btn-dark">Back</a>
+            <a href="showEmployees.html" class="btn btn-outline-light">Back</a>
         </div>
     </div>
 </div>

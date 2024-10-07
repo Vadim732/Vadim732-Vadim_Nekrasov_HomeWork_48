@@ -5,13 +5,11 @@ Layout = "layout";
 
 <div class="container">
     <h1>Employees</h1>
-
     <table class="employees-table">
         <thead>
         <tr class="title">
             <th>Id</th>
             <th>Name</th>
-            <th>Surname</th>
             <th>Age</th>
             <th>Actions</th>
         </tr>
@@ -22,7 +20,6 @@ Layout = "layout";
         <tr class="employees">
             <td>@employee.Id</td>
             <td>@employee.Name</td>
-            <td></td>
             <td>@employee.Age</td>
             <td><a href="http://localhost:7777/employee.html?id=@employee.Id" class="btn btn-outline-light">Ditails</a></td>
         </tr>
@@ -31,5 +28,4 @@ Layout = "layout";
     </table>
     <p class="text-center"><a href="addEmployee.html" class="btn btn-light mt-5">Add employee</a></p>
 </div>
-
 </body>

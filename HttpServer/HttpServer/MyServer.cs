@@ -42,7 +42,45 @@ public class MyServer
     {
         string filename = context.Request.Url.AbsolutePath;
 
-        if (context.Request.HttpMethod == "POST" && filename == "/showText.html")
+        if (filename == "/employee.html")
+        {
+            string employeeId = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(employeeId))
+            {
+                var serializer = new Serializer();
+                List<Emploeeys> employees = serializer.LoadEmployees();
+                var employee = employees.FirstOrDefault(e => e.Id == employeeId);
+                if (employee != null)
+                {
+                    string layoutPath = _siteDirectory + "/layout.html";
+                    var razorService = Engine.Razor;
+                    if (!razorService.IsTemplateCached("layout", null))
+                        razorService.AddTemplate("layout", File.ReadAllText(layoutPath));
+                    string employeeTemplatePath = _siteDirectory + "/employee.html";
+                    if (!razorService.IsTemplateCached("employee", null))
+                    {
+                        razorService.AddTemplate("employee", File.ReadAllText(employeeTemplatePath));
+                        razorService.Compile("employee");
+                    }
+
+                    string html = razorService.Run("employee", null, new { Employee = employee });
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(html);
+                    context.Response.ContentType = "text/html";
+                    context.Response.ContentLength64 = buffer.Length;
+                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                    context.Response.OutputStream.Flush();
+                    context.Response.OutputStream.Close();
+                }
+                else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    context.Response.OutputStream.Write(new byte[0]);
+                    context.Response.OutputStream.Close();
+                }
+            }
+        }
+
+        else if (context.Request.HttpMethod == "POST" && filename == "/showText.html")
         {
             using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
             {
@@ -65,6 +103,7 @@ public class MyServer
                 context.Response.OutputStream.Close();
             }
         }
+        
         else if (context.Request.HttpMethod == "POST" && filename == "/addEmployee")
         {
             using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
@@ -93,7 +132,6 @@ public class MyServer
         else
         {
             filename = _siteDirectory + filename;
-
             if (File.Exists(filename))
             {
                 try
